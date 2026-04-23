@@ -110,7 +110,7 @@ All data is sourced from publicly available government datasets.
 
 - **Backend**: Python, FastAPI, uvicorn
 - **Data Processing**: httpx (async HTTP), csv/json parsing
-- **Language Model**: Google Gemini API (gemini-1.5-flash)
+- **Language Model**: Groq  API
 - **Storage**: ChromaDB (persistent local vector store)
 - **Scheduling**: APScheduler (AsyncIOScheduler)
 - **Frontend**: Vanilla HTML, CSS, JavaScript — no frameworks

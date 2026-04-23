@@ -13,7 +13,7 @@
     const grid = document.getElementById("stories-grid");
     const emptyState = document.getElementById("empty-state");
     const errorState = document.getElementById("error-state");
-    const pillEl = document.getElementById("story-count-pill");
+    const countTextEl = document.getElementById("story-count-text");
     const lastUpdatedEl = document.getElementById("last-updated");
     const refreshBtn = document.getElementById("refresh-btn");
 
@@ -61,9 +61,9 @@
         setText("#stat-stories .stat-value", data.total_stories || 0);
         setText("#stat-datasets .stat-value", data.datasets_monitored || 0);
         setText("#stat-topics .stat-value", data.topics_covered || 0);
-        pillEl.textContent = (data.total_stories || 0) + " stories";
+        if (countTextEl) countTextEl.textContent = (data.total_stories || 0) + " stories";
 
-        if (data.last_updated) {
+        if (data.last_updated && lastUpdatedEl) {
             lastUpdatedEl.textContent = "Last updated: " + relativeTime(data.last_updated);
         }
     }
@@ -103,20 +103,20 @@
         emptyState.style.display = "none";
         grid.style.display = "grid";
 
-        stories.forEach(function (story, idx) {
-            var card = buildCard(story, idx);
+        stories.forEach(function (story) {
+            var card = buildCard(story);
             grid.appendChild(card);
         });
     }
 
-    function buildCard(story, idx) {
+    function buildCard(story) {
         var card = el("div", "story-card");
-        card.style.animationDelay = (idx * 0.05) + "s";
 
         var topic = story.topic || "economy";
         var date = story.date || "";
         var body = story.body || "";
-        var isLong = body.length > 150;
+        // We will just let CSS handle line-clamping and JS handle the read more toggle logic
+        var isLong = body.length > 120;
 
         // Header
         var header = el("div", "card-header");
@@ -146,23 +146,27 @@
             });
         }
 
-        // Footer
-        var footer = el("div", "card-footer");
+        // Divider
+        var divider = el("div", "card-divider");
+
+        // Source Link
+        var link = document.createElement("a");
         if (story.source_url) {
-            var link = document.createElement("a");
             link.className = "source-link";
             link.href = story.source_url;
             link.target = "_blank";
             link.rel = "noopener noreferrer";
             link.textContent = "View Source Data \u2192";
-            footer.appendChild(link);
         }
 
         card.appendChild(header);
         card.appendChild(title);
         card.appendChild(bodyEl);
         if (readMoreEl) card.appendChild(readMoreEl);
-        card.appendChild(footer);
+        if (story.source_url) {
+            card.appendChild(divider);
+            card.appendChild(link);
+        }
 
         return card;
     }
@@ -210,17 +214,14 @@
 
     /* ===== Refresh ===== */
     function attachRefreshListener() {
+        if (!refreshBtn) return;
         refreshBtn.addEventListener("click", async function () {
             refreshBtn.classList.add("refreshing");
-            refreshBtn.querySelector(".refresh-icon").textContent = "\u21BB";
-            var span = refreshBtn.childNodes[refreshBtn.childNodes.length - 1];
-            if (span.nodeType === 3) span.textContent = " Refreshing\u2026";
 
             await fetchJSON(API.refresh, { method: "POST" });
             setTimeout(async function () {
                 await silentRefresh();
                 refreshBtn.classList.remove("refreshing");
-                if (span.nodeType === 3) span.textContent = " Refresh Now";
             }, 5000);
         });
     }

@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LuxData Stories — Public data from Luxembourg, explained simply. AI-driven insights from data.public.lu datasets.">
+    <meta name="description" content="LuxData Stories — Public data from Luxembourg, explained simply.">
     <title>LuxData Stories — Luxembourg Open Data Insights</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=2">
 </head>
 <body>
     <!-- Header -->
@@ -19,7 +19,8 @@
                 <p class="site-subtitle">Public data from Luxembourg, explained simply</p>
             </div>
             <div class="header-right">
-                <span class="pill" id="story-count-pill">0 stories</span>
+                <span class="story-count" id="story-count-text">0 stories</span>
+                <span class="header-bullet">&bull;</span>
                 <span class="last-updated" id="last-updated">Last updated: —</span>
             </div>
         </div>
@@ -28,27 +29,13 @@
     <!-- Filter Bar -->
     <nav class="filter-bar" id="filter-bar">
         <div class="filter-bar-content">
-            <button class="filter-btn active" data-topic="all" id="filter-all">
-                All <span class="badge" id="badge-all">0</span>
-            </button>
-            <button class="filter-btn" data-topic="housing" id="filter-housing">
-                Housing <span class="badge" id="badge-housing">0</span>
-            </button>
-            <button class="filter-btn" data-topic="employment" id="filter-employment">
-                Employment <span class="badge" id="badge-employment">0</span>
-            </button>
-            <button class="filter-btn" data-topic="transport" id="filter-transport">
-                Transport <span class="badge" id="badge-transport">0</span>
-            </button>
-            <button class="filter-btn" data-topic="environment" id="filter-environment">
-                Environment <span class="badge" id="badge-environment">0</span>
-            </button>
-            <button class="filter-btn" data-topic="economy" id="filter-economy">
-                Economy <span class="badge" id="badge-economy">0</span>
-            </button>
-            <button class="filter-btn" data-topic="health" id="filter-health">
-                Health <span class="badge" id="badge-health">0</span>
-            </button>
+            <button class="filter-btn active" data-topic="all" id="filter-all">All (<span id="badge-all">0</span>)</button>
+            <button class="filter-btn" data-topic="housing" id="filter-housing">Housing (<span id="badge-housing">0</span>)</button>
+            <button class="filter-btn" data-topic="employment" id="filter-employment">Employment (<span id="badge-employment">0</span>)</button>
+            <button class="filter-btn" data-topic="transport" id="filter-transport">Transport (<span id="badge-transport">0</span>)</button>
+            <button class="filter-btn" data-topic="environment" id="filter-environment">Environment (<span id="badge-environment">0</span>)</button>
+            <button class="filter-btn" data-topic="economy" id="filter-economy">Economy (<span id="badge-economy">0</span>)</button>
+            <button class="filter-btn" data-topic="health" id="filter-health">Health (<span id="badge-health">0</span>)</button>
         </div>
     </nav>
 
@@ -60,19 +47,17 @@
 
         <!-- Empty State -->
         <div class="empty-state" id="empty-state" style="display: none;">
-            <div class="empty-icon">📊</div>
-            <p>Stories are being generated. Check back in a few minutes.</p>
+            <p>Stories are being generated from Luxembourg open data. This usually takes a minute.</p>
         </div>
 
         <!-- Error State -->
         <div class="error-state" id="error-state" style="display: none;">
-            <div class="error-icon">🔄</div>
             <p>Data is being refreshed. Check back shortly.</p>
         </div>
     </main>
 
     <!-- Stats Bar -->
-    <footer class="stats-bar" id="stats-bar">
+    <div class="stats-bar" id="stats-bar">
         <div class="stats-bar-content">
             <div class="stat-item" id="stat-stories">
                 <span class="stat-value">0</span>
@@ -88,11 +73,16 @@
             </div>
             <button class="refresh-btn" id="refresh-btn">
                 <span class="refresh-icon">↻</span>
-                Refresh Now
+                <span class="refresh-text">Refresh data</span>
             </button>
         </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        Data sourced from data.public.lu &middot; Updated automatically
     </footer>
 
-    <script src="/static/app.js"></script>
+    <script src="/static/app.js?v=2"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@ The system runs three cooperative agents in a pipeline:
 
 **Monitor Agent** — Polls the Luxembourg open data API every 6 hours, comparing dataset metadata against stored snapshots. When it detects a new or modified dataset, it flags it for analysis. It handles API failures gracefully and never processes more than 10 datasets per run.
 
-**Analysis Agent** — Downloads the flagged dataset (CSV or JSON), parses the first 500 rows, computes basic statistics, and sends a structured prompt to Google's Gemini model. The model returns three focused bullets: what changed, who it affects, and one practical implication. All numbers come directly from the data.
+**Analysis Agent** — Downloads the flagged dataset (CSV or JSON), parses the first 500 rows, computes basic statistics, and sends a structured prompt to Groq model. The model returns three focused bullets: what changed, who it affects, and one practical implication. All numbers come directly from the data.
 
 **Writer Agent** — Takes the analysis bullets and generates a 120-150 word news story written in plain English. The story reads like journalism, not marketing copy. It includes specific figures and ends with a pointer to the source data. The agent also generates a concise headline.
 
@@ -47,17 +47,18 @@ luxdata-stories/
 ## Getting Started
 
 1. **Clone the repository**
+
    ```bash
    git clone <repo-url>
    cd luxdata-stories
    ```
-
 2. **Create a virtual environment**
+
    ```bash
    python -m venv venv
    ```
-
 3. **Activate the virtual environment**
+
    ```bash
    # Windows
    venv\Scripts\activate
@@ -65,24 +66,25 @@ luxdata-stories/
    # macOS / Linux
    source venv/bin/activate
    ```
-
 4. **Install dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
-
 5. **Create your `.env` file**
-   ```
-   GEMINI_API_KEY=your_key_here
-   ```
-   Get a key from [Google AI Studio](https://aistudio.google.com/apikey).
 
+   ```
+   GROQ_API_KEY=your_key_here
+   ```
+
+   Get a key from [Google AI Studio](https://aistudio.google.com/apikey).
 6. **Run the application**
+
    ```bash
    uvicorn main:app --reload
    ```
-
 7. **Open the dashboard**
+
    ```
    http://localhost:8000
    ```
@@ -91,13 +93,13 @@ The pipeline runs automatically on startup and every 6 hours after that. You can
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/stories` | List recent stories (optional `?topic=` filter) |
-| GET | `/api/stories/topics` | Topic list with story counts |
-| GET | `/api/stats` | Dashboard statistics |
-| POST | `/api/refresh` | Trigger pipeline manually |
-| GET | `/health` | Health check |
+| Method | Path                    | Description                                       |
+| ------ | ----------------------- | ------------------------------------------------- |
+| GET    | `/api/stories`        | List recent stories (optional `?topic=` filter) |
+| GET    | `/api/stories/topics` | Topic list with story counts                      |
+| GET    | `/api/stats`          | Dashboard statistics                              |
+| POST   | `/api/refresh`        | Trigger pipeline manually                         |
+| GET    | `/health`             | Health check                                      |
 
 ## Data Sources
 
